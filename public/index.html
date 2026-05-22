@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <div class="ambient"></div>
     <div class="app">
       <aside class="sidebar">
         <div class="brand">
           <h1>Eclat Pro AI</h1>
-          <p>Hub multi-modeles avec tes cles API</p>
+          <p>Workspace conversationnel multi-modeles</p>
         </div>
 
         <div class="panel">
@@ -23,28 +24,47 @@
             <option value="openrouter">OpenRouter</option>
           </select>
 
-          <label for="model" style="margin-top: 10px">Modele</label>
+          <label for="model" class="mt">Modele</label>
           <select id="model"></select>
 
-          <label for="temperature" style="margin-top: 10px">Temperature</label>
+          <label for="temperature" class="mt">Temperature</label>
           <input id="temperature" type="number" min="0" max="2" step="0.1" value="0.7" />
         </div>
 
         <div class="panel">
           <label for="apiKey">Cle API du provider selectionne</label>
           <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
-          <button id="saveKey" style="margin-top: 10px">Enregistrer localement</button>
-          <p style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0">
-            Les cles restent dans ton navigateur (localStorage).
-          </p>
+          <div class="row mt">
+            <button id="saveKey">Enregistrer</button>
+            <button id="clearKeys" class="ghost">Vider</button>
+          </div>
+          <p class="hint">Les cles restent dans ton navigateur (localStorage).</p>
+        </div>
+
+        <div class="panel compact">
+          <div class="stat"><span>Messages</span><strong id="messageCount">0</strong></div>
+          <div class="stat"><span>Session</span><strong id="sessionTime">00:00</strong></div>
         </div>
       </aside>
 
       <main class="main">
+        <section class="chat-head">
+          <div>
+            <h2>Conversation</h2>
+            <p id="activeModelLabel">Aucun modele actif</p>
+          </div>
+          <div class="row">
+            <button id="themeToggle" class="ghost">Theme</button>
+            <button id="newChat" class="ghost">Nouveau chat</button>
+            <button id="exportChat" class="ghost">Exporter</button>
+          </div>
+        </section>
+
         <section id="messages" class="messages"></section>
+
         <section class="composer">
           <div class="composer-grid">
-            <textarea id="prompt" placeholder="Pose ta question..." required></textarea>
+            <textarea id="prompt" placeholder="Pose ta question... (Entrer pour envoyer, Shift+Entrer pour saut de ligne)" required></textarea>
             <button id="send">Envoyer</button>
           </div>
           <div id="status">Pret.</div>
