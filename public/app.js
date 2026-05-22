@@ -2,7 +2,7 @@ const modelsByProvider = {
   openai: ["gpt-4.1", "gpt-4o-mini", "gpt-4.1-mini"],
   anthropic: ["claude-3-7-sonnet-latest", "claude-3-5-haiku-latest"],
   google: ["gemini-2.0-flash", "gemini-1.5-pro"],
-  openrouter: ["openai/gpt-4o-mini", "anthropic/claude-3.5-sonnet", "google/gemini-2.0-flash-001"]
+  openrouter: []
 };
 
 const providerEl = document.getElementById("provider");
@@ -29,6 +29,7 @@ const themeStorageKey = "eclat_pro_ai_theme";
 const systemPrompt = "Tu es Eclat Pro AI, un assistant clair, fiable et professionnel.";
 const conversation = [{ role: "system", content: systemPrompt }];
 const startedAt = Date.now();
+const openRouterFallbackModels = ["openai/gpt-4o-mini", "anthropic/claude-3.5-sonnet", "google/gemini-2.0-flash-001"];
 
 const readJson = (key, fallback) => {
   try {
@@ -103,9 +104,26 @@ const setBusy = (busy, text = "") => {
   statusEl.textContent = text || (busy ? "Generation en cours..." : "Pret.");
 };
 
-const updateModelOptions = () => {
+const updateModelOptions = async () => {
   const provider = providerEl.value;
-  const list = modelsByProvider[provider] || [];
+  let list = modelsByProvider[provider] || [];
+
+  if (provider === "openrouter" && list.length === 0) {
+    statusEl.textContent = "Chargement des modeles OpenRouter...";
+    try {
+      const response = await fetch("/api/models/openrouter");
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Echec chargement OpenRouter");
+      modelsByProvider.openrouter = Array.isArray(data.models) ? data.models : [];
+      list = modelsByProvider.openrouter;
+      statusEl.textContent = `${list.length} modeles OpenRouter charges.`;
+    } catch {
+      modelsByProvider.openrouter = openRouterFallbackModels;
+      list = openRouterFallbackModels;
+      statusEl.textContent = "API OpenRouter indisponible: liste de secours chargee.";
+    }
+  }
+
   modelEl.innerHTML = "";
   list.forEach((m) => {
     const opt = document.createElement("option");
@@ -211,7 +229,9 @@ const sendPrompt = async () => {
 
 saveKeyEl.addEventListener("click", saveKey);
 clearKeysEl.addEventListener("click", clearKeys);
-providerEl.addEventListener("change", updateModelOptions);
+providerEl.addEventListener("change", () => {
+  updateModelOptions();
+});
 modelEl.addEventListener("change", () => {
   activeModelLabelEl.textContent = `${providerEl.value} / ${modelEl.value}`;
 });

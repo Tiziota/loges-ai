@@ -109,6 +109,28 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true, app: "Eclat Pro AI", timestamp: new Date().toISOString() });
 });
 
+app.get("/api/models/openrouter", async (req, res) => {
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/models");
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: data?.error?.message || "Impossible de recuperer les modeles OpenRouter."
+      });
+    }
+
+    const models = (data?.data || [])
+      .map((item) => item?.id)
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+
+    return res.json({ models });
+  } catch (error) {
+    return res.status(500).json({ error: "Erreur serveur lors de la recuperation des modeles OpenRouter." });
+  }
+});
+
 app.post("/api/chat", async (req, res) => {
   try {
     const { provider, model, apiKey, messages = [], temperature = 0.7 } = req.body;
