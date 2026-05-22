@@ -24,6 +24,9 @@
             <option value="openrouter">OpenRouter</option>
           </select>
 
+          <label for="modelSearch" class="mt">Recherche modele</label>
+          <input id="modelSearch" type="text" placeholder="Filtrer les modeles..." />
+
           <label for="model" class="mt">Modele</label>
           <select id="model"></select>
 
@@ -41,8 +44,21 @@
           <p class="hint">Les cles restent dans ton navigateur (localStorage).</p>
         </div>
 
+        <div class="panel">
+          <label for="promptPreset">Template prompt</label>
+          <select id="promptPreset">
+            <option value="">Choisir un template...</option>
+            <option value="resume">Resume clair</option>
+            <option value="code">Generer du code</option>
+            <option value="marketing">Post marketing</option>
+            <option value="plan">Plan d'action</option>
+          </select>
+          <button id="applyPreset" class="ghost mt">Appliquer template</button>
+        </div>
+
         <div class="panel compact">
           <div class="stat"><span>Messages</span><strong id="messageCount">0</strong></div>
+          <div class="stat"><span>Favoris</span><strong id="favoriteCount">0</strong></div>
           <div class="stat"><span>Session</span><strong id="sessionTime">00:00</strong></div>
         </div>
       </aside>
@@ -53,10 +69,14 @@
             <h2>Conversation</h2>
             <p id="activeModelLabel">Aucun modele actif</p>
           </div>
-          <div class="row">
+          <div class="row wrap">
+            <input id="chatSearch" class="head-search" type="text" placeholder="Rechercher dans le chat..." />
             <button id="themeToggle" class="ghost">Theme</button>
             <button id="newChat" class="ghost">Nouveau chat</button>
+            <button id="regenerate" class="ghost">Regenerer</button>
+            <button id="importChat" class="ghost">Importer</button>
             <button id="exportChat" class="ghost">Exporter</button>
+            <input id="importFile" type="file" accept="application/json" hidden />
           </div>
         </section>
 
@@ -67,7 +87,10 @@
             <textarea id="prompt" placeholder="Pose ta question... (Entrer pour envoyer, Shift+Entrer pour saut de ligne)" required></textarea>
             <button id="send">Envoyer</button>
           </div>
-          <div id="status">Pret.</div>
+          <div class="composer-foot">
+            <div id="charCount">0 caractere</div>
+            <div id="status">Pret.</div>
+          </div>
         </section>
       </main>
     </div>
