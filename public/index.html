@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eclat Pro AI</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <h1>Eclat Pro AI</h1>
+          <p>Hub multi-modeles avec tes cles API</p>
+        </div>
+
+        <div class="panel">
+          <label for="provider">Provider</label>
+          <select id="provider">
+            <option value="openai">OpenAI</option>
+            <option value="anthropic">Anthropic</option>
+            <option value="google">Google Gemini</option>
+            <option value="openrouter">OpenRouter</option>
+          </select>
+
+          <label for="model" style="margin-top: 10px">Modele</label>
+          <select id="model"></select>
+
+          <label for="temperature" style="margin-top: 10px">Temperature</label>
+          <input id="temperature" type="number" min="0" max="2" step="0.1" value="0.7" />
+        </div>
+
+        <div class="panel">
+          <label for="apiKey">Cle API du provider selectionne</label>
+          <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+          <button id="saveKey" style="margin-top: 10px">Enregistrer localement</button>
+          <p style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0">
+            Les cles restent dans ton navigateur (localStorage).
+          </p>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section id="messages" class="messages"></section>
+        <section class="composer">
+          <div class="composer-grid">
+            <textarea id="prompt" placeholder="Pose ta question..." required></textarea>
+            <button id="send">Envoyer</button>
+          </div>
+          <div id="status">Pret.</div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

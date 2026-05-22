@@ -1,0 +1,24 @@
+{
+  "name": "eclat-pro-ai",
+  "version": "1.0.0",
+  "description": "Eclat Pro AI - interface multi-modeles IA prete pour Render",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "node",
+    "render"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2"
+  }
+}
